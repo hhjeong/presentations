@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Title</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style type="text/css">
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Nanum Gothic'; }
+h1, h2, h3 {
+	font-family: 'Nanum Gothic';
+	font-weight: normal;
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+</style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# 9/19 과제
+
+---
+
+class: center, middle
+# 삼각형 넓이 구하기
+
+---
+
+# 될것 같지만 되지 않는 코드
+
+```c
+#include <stdio.h>
+
+int main() {
+    int width;
+    int height;
+    int area;
+    scanf("%d", &width);
+    scanf("%d", &height);
+
+    // 삼각형 넓이 공식 = 밑변 * 높이 / 2
+
+    area = width*height/2;
+    printf("%d\n", area );
+
+}
+```
+  
+
+* 예제 입력을 넣어봅시다
+
+```text
+9 83
+```
+
+* 출력에 373.50이 나와야 하지만...
+
+```text
+373
+```
+
+---
+
+# 한번 고쳐봅시다.
+
+* 맞아! 소수점 출력하려면 %f를 써야하네?
+* 게다가, 소수점 둘째짜리 까지니까 %.2f 쓰면 되겠지?
+
+```c
+#include <stdio.h>
+
+int main() {
+    int width;
+    int height;
+    int area;
+    scanf("%d", &width);
+    scanf("%d", &height);
+
+    // 삼각형 넓이 공식 = 밑변 * 높이 / 2
+
+    area = width*height/2;
+    printf("%.2f\n", area );
+
+}
+```
+
+* 하지만...
+
+```text
+0.00
+```
+
+---
+
+# 무엇이 문제일까?
+
+## 2가지 문제
+* __```area = width * height / 2```__
+    * ```int * int / int = int```
+    * 밑변과 높이를 구한 것 까지는 OK ( 9 * 83 = 747 )
+    * 747 / 2 &gt; 373 ( not 373.5 )
+        * ```int``` 형간의 나눗셈 연산 : 몫만 취함
+
+## 해결방법
+* 밑변과 높이를 실수로 지정
+* 형변환을 이용하여 해결
+* 추가적인 연산으로 정수만으로 해결
+
+---
+
+# 해결방법 1
+
+```c
+#include <stdio.h>
+
+int main() {
+    double width;
+    double height;
+    double area;
+    scanf("%lf", &width);
+    scanf("%lf", &height);
+
+    area = width*height/2;
+    printf("%.2f\n", area );
+
+}
+```
+
+---
+
+# 해결방법 2
+```c
+#include <stdio.h>
+
+int main() {
+    int width;
+    int height;
+    scanf("%d", &width);
+    scanf("%d", &height);
+
+    printf("%d.%d0\n", area / 2, area % 2 * 5 );
+
+}
+```
+
+</textarea>
+
+<script src="http://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+var slideshow = remark.create();
+</script>
+</body>
+</html>

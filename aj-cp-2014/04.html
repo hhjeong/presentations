@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Title</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style type="text/css">
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Nanum Gothic'; }
+h1, h2, h3 {
+	font-family: 'Nanum Gothic';
+	font-weight: normal;
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+</style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# 수식과 연산자 (2)
+
+---
+
+# 목차
+
+1. 증감 연산자
+2. 연산자의 우선 순위
+3. 형 변환
+
+---
+
+# 증감 연산자
+
+* 단항 연산자의 일종
+	* 연산에 한개의 변수 포함
+	* 변수 앞 혹은 뒤에 위치
+* 예시
+ * variable++, --disp
+* 특징
+    * 반복문 사용시 유용하게 사용
+	* 연산자 위치에 따라 동작이 달라짐
+
+---
+
+# 증감 연산자 예시
+
+```c
+#include <stdio.h>
+
+int main() {
+    int number;
+    int next_number;
+    
+    number = 0;
+
+    next_number = ++number;
+    printf("next_number = %d, number = %d\n", next_number, number );
+
+    next_number = number++; 
+    printf("next_number = %d, number = %d\n", number, next_number );
+   
+    printf("number++ = %d\n", number++ );
+
+    printf("++number = %d\n", ++number );
+}
+```
+
+---
+
+# 예시 출력 결과
+
+```text
+next_number = 1, number = 1
+next_number = 2, number = 1
+number++ = 2
+++number = 4
+```
+
+---
+
+# 증감 연산자를 풀어 써보기
+
+* number = number + 1의 위치를 살펴볼 것!
+
+```c
+#include <stdio.h>
+
+int main() {
+    ... 
+    // next_number = ++number;
+    number = number + 1;
+    next_number = number;
+    printf("next_number = %d, number = %d\n", next_number, number );
+
+    // next_number = number++; 
+    next_number = number;
+    number = number + 1;
+    printf("next_number = %d, number = %d\n", number, next_number );
+   
+    // printf("number++ = %d\n", number++ );
+    printf("number++ = %d\n", number );
+    number = number + 1;
+
+    // printf("++number = %d\n", ++number );
+    number = number + 1;
+    printf("++number = %d\n", number );
+}
+```
+
+---
+
+class: center, middle
+
+
+# 형변환(type casting)
+
+---
+
+# 형변환
+
+* 형변환이란?
+    * 연산 도중 변수, 상수의 데이터의 형이 변화
+    * int -&gt; double, char -&gt; int ...
+* 일시적 변환
+    * 연산 자체에서 변환되어 처리
+    * 하지만 실제로 변수, 상수의 데이터 형이 바뀌지는 않음
+---
+
+# 형변환 종류
+
+* 자동적(implicit) 형변환
+* 명시적(explicit) 형변환
+
+---
+
+# 대입 연산에서 형변환
+
+```c
+double this_is_double_variable;
+this_is_double_variable = 10;
+printf("%f\n", this_is_double_variable );
+```
+
+* 결과 
+
+```text
+10.000000
+```
+
+---
+
+# 대입 연산에서 형변환 (계속)
+
+```c
+int this_is_int_variable = 3.141592;
+printf("%d\n", this_is_int_variable );
+```
+
+* Compile 도중 warning 메시지
+
+<!-- 이 부분은 VS로 수정할 것 -->
+
+```text
+04.c:4:32: warning: implicit conversion from 'double' to 'int' 
+changes value from 3.141592 to 3 [-Wliteral-conversion]
+```
+
+* 결과
+
+```text
+3
+```
+---
+
+# 대입연산에서 형변환 (계속)
+
+<!-- 그림 추가 -->
+
+---
+
+# 자동적 형변환의 규칙
+
+0. 최대한 보전하여 형변환을 함
+    * 작은 범위 -&gt; 큰 범위는 그대로
+
+1. *실수(float, double)* -&gt; *정수 (short, int, long)*
+    * 내림 연산
+    * 3.14 -&gt; 3, 6.99 -&gt; 6
+
+2. *double* -&gt; *float*
+    * 반올림 연산
+
+3. *int* -&gt; *short, char*
+    * 높은 비트(higher order bits) 제거
+    * 367522013 (int) -&gt; -35 (char)
+    * 00001010 11110011 111110000 <u>11011101</u> -&gt; 11011101
+
+
+</textarea>
+
+<script src="http://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+var slideshow = remark.create();
+</script>
+</body>
+</html>
